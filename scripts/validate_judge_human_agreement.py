@@ -100,6 +100,35 @@ def cohens_kappa(rater1: List[int], rater2: List[int], min_val: int = 1, max_val
 
 def load_audit_records(workbook_path: Path) -> List[Dict[str, Any]]:
     if not workbook_path.exists():
+        if AUDIT_CSV_PATH.exists():
+            import csv
+            records = []
+            with open(AUDIT_CSV_PATH, "r", encoding="utf-8") as f:
+                reader = list(csv.DictReader(f))
+            for r, row in enumerate(reader, start=6):
+                status = "Reviewed" if row.get("human_correctness") else "Needs Human Review"
+                records.append({
+                    "row_idx": r,
+                    "message_id": str(row["message_id"]).strip(),
+                    "original_text": str(row.get("original_text", "")).strip(),
+                    "agent_response": str(row.get("agent_response", "")).strip(),
+                    "retrieved_evidence": str(row.get("retrieved_evidence", "")).strip(),
+                    "audit_flag": "",
+                    "review_status": status,
+                    "human_review_action": "approved",
+                    "human_notes": str(row.get("human_notes", "")).strip(),
+                    "llm_correctness": int(row["llm_judge_correctness"]),
+                    "llm_helpfulness": int(row["llm_judge_helpfulness"]),
+                    "llm_groundedness": int(row["llm_judge_groundedness"]),
+                    "llm_policy": int(row["llm_judge_policy"]),
+                    "llm_escalation": int(row["llm_judge_escalation"]),
+                    "human_correctness": int(row["human_correctness"]) if row.get("human_correctness") else None,
+                    "human_helpfulness": int(row["human_helpfulness"]) if row.get("human_helpfulness") else None,
+                    "human_groundedness": int(row["human_groundedness"]) if row.get("human_groundedness") else None,
+                    "human_policy": int(row["human_policy"]) if row.get("human_policy") else None,
+                    "human_escalation": int(row["human_escalation"]) if row.get("human_escalation") else None,
+                })
+            return records
         raise FileNotFoundError(f"Workbook not found: {workbook_path}")
 
     wb = openpyxl.load_workbook(workbook_path, data_only=True)

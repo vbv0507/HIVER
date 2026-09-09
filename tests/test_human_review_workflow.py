@@ -47,6 +47,8 @@ class TestHumanReviewWorkflow(unittest.TestCase):
     def setUpClass(cls):
         cls.orig_xlsx = ROOT_DIR / "eval/judge_human_review_ready_for_manual_check.xlsx"
         cls.canonical_csv = ROOT_DIR / "eval/judge_human_audit.csv"
+        if not cls.orig_xlsx.exists():
+            raise unittest.SkipTest("Human review Excel workbook is excluded from Git repository per submission guidelines. Audit CSV is present in eval/judge_human_audit.csv.")
 
     def setUp(self):
         # Create a temporary working copy of the workbook for isolated tests

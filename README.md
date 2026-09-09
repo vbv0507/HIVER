@@ -338,8 +338,7 @@ HIVER/
 │   ├── evaluation_config.json          # Benchmark configuration & judge settings
 │   ├── golden_eval_set_final.csv       # Curated 200-example golden evaluation set
 │   ├── golden_thread_exclusions.json   # 200 conversations / 2,027 tweets excluded
-│   ├── judge_human_audit.csv           # 50 audit cases with synchronized human ratings
-│   └── judge_human_review_ready_for_manual_check.xlsx # Canonical reviewed workbook
+│   └── judge_human_audit.csv           # 50 audit cases with synchronized human ratings
 │
 ├── data/
 │   ├── raw/                            # Place raw twcs.csv here

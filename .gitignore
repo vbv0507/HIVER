@@ -40,6 +40,14 @@ Thumbs.db
 
 # Frontend dependencies and builds
 node_modules/
-frontend/node_modules/
-frontend/dist/
 *.local
+
+# Excel workbooks & local review spreadsheets
+*.xlsx
+*.xls
+
+# Obsolete archive & local scratch/experimentation
+_archive/
+notebooks/
+scratch/
+*.log
