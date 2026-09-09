@@ -1,0 +1,45 @@
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Large raw dataset files (keep folder and gitkeep)
+data/raw/*.csv
+data/raw/*.zip
+data/raw/*.tar.gz
+!data/raw/.gitkeep
+
+# Large processed data outputs (keep gitkeep)
+data/processed/*.csv
+data/processed/*.json
+data/processed/*.jsonl
+data/processed/*.joblib
+!data/processed/.gitkeep
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Frontend dependencies and builds
+node_modules/
+frontend/node_modules/
+frontend/dist/
+*.local

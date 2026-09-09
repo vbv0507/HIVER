@@ -1,0 +1,20 @@
+{
+  "evaluation_seed": 42,
+  "golden_examples_count": 200,
+  "canonical_source": "C:\\Users\\vrai2\\OneDrive\\Desktop\\HIVER\\eval\\golden_eval_set_final.csv",
+  "exclusions_file": "C:\\Users\\vrai2\\OneDrive\\Desktop\\HIVER\\eval\\golden_thread_exclusions.json",
+  "retrieval_top_k": 3,
+  "models": {
+    "main_agent": "AmazonHelpAgent (Hybrid Intent Classifier + TF-IDF Retrieval + Deterministic Policy + Grounded Generator)",
+    "baseline_1": "RuleTemplateBaseline (Keyword/Regex + Static Canned Templates)",
+    "baseline_2": "NearestNeighborBaseline (Pure Top-1 Retrieval Copy)",
+    "judge_engine": "ResponseQualityJudge (5-dimension rubric: Correctness, Helpfulness, Groundedness, Policy, Escalation)",
+    "judge_provider": "google_gemini",
+    "judge_model": "gemini-3.5-flash-lite",
+    "judge_enabled": true
+  },
+  "thresholds": {
+    "min_evidence_score": 0.12,
+    "min_confidence": 0.4
+  }
+}
