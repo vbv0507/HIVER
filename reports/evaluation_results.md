@@ -35,8 +35,8 @@
 | | Policy Compliance Rate | **95.5%** | 62.0% | 45.0% |
 | **Retrieval Performance** | Evidence Availability Rate | **95.0%** | N/A | 100.0% |
 | | Top-1 Hit Rate | **41.5%** | N/A | 34.0% |
-| **Latency** | Median Latency (p50) | **24.46 ms** | 0.08 ms | 22.41 ms |
-| | 95th Percentile (p95) | **31.76 ms** | 0.16 ms | 29.64 ms |
+| **Latency** | Median Latency (p50) | **28.25 ms** | 0.08 ms | 27.41 ms |
+| | 95th Percentile (p95) | **39.16 ms** | 0.2 ms | 42.54 ms |
 
 *(Note: Baselines 1 & 2 do not natively produce conversation state, language detection, or P0 security alert triage; metrics are marked N/A or baseline-derived).*
 
@@ -75,13 +75,12 @@ The response quality was evaluated across 5 core dimensions using a fixed 1–5 
 
 ---
 
-## 4. Human Review & Audit Layer
+## 4. Completed Human Review & Audit Layer
 
-To validate the LLM Judge scores without fabricating human ratings:
-- A stratified subset of **50 golden examples** was selected using deterministic `seed=42`.
-- Exported to `eval/judge_human_audit.csv` and `eval/judge_human_review.xlsx`.
-- Human rating columns are initialized **strictly empty**.
-- To verify alignment once human annotations are filled, run:
+- All **200/200** golden labels in `my_final_*` were human-reviewed.
+- All **50/50** judge-human audit cases have completed human ratings in the canonical review workbook.
+- Judge-human agreement is intentionally reported separately by the validation script because it measures judge calibration, not agent correctness.
+- To reproduce the agreement calculation, run:
   ```bash
   python scripts/validate_judge_human_agreement.py
   ```

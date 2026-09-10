@@ -173,3 +173,22 @@ This log records the main engineering decisions I made while building the Amazon
 - **Financial Disputes:** Escalation triggers for duplicate billing, double charges, and unauthorized debits verified across multiple paraphrases without regression.
 - **Policy Compliance:** Maintained at **95.5%** with 100.0% No-Hallucination rate across all 200 benchmark responses.
 
+---
+
+## Decision 17: Evaluate Escalation with F1, Not Accuracy Alone
+
+**Decision:** I report escalation precision, recall, and F1 alongside accuracy, and treat F1 as the primary comparison metric.
+
+**Why:** Final human labels require escalation for 79 of 200 cases. Both baselines always auto-handle, which earns 60.5% accuracy by predicting the majority class while finding zero required escalations. Accuracy therefore disguises their lack of useful escalation behavior.
+
+**Trade-off:** F1 makes the main agent's low recall visible (0.190) rather than presenting an overly favorable score, but it gives a faithful decision-quality comparison.
+
+---
+
+## Decision 18: Ship a Dependency-Free Dashboard Served by FastAPI
+
+**Decision:** I added a single HTML dashboard at `/dashboard` rather than a separate JavaScript build.
+
+**Why:** It calls the real FastAPI inference and evaluation endpoints directly while keeping the submission easy to run from a clean checkout.
+
+**Trade-off:** The UI is intentionally compact; it demonstrates live behavior and final metrics without introducing a frontend framework or build pipeline.

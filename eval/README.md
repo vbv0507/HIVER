@@ -1,8 +1,8 @@
 # Golden Evaluation Benchmark (Step 2)
 
-> [!CAUTION]
-> **INTEGRITY NOTICE (STATUS: PENDING HUMAN REVIEW)**:
-> Columns named `my_final_*` and `human_*` currently contain **provisional AI-assisted suggestions only**. The user will personally perform the human review and verification before final submission. All metrics reported against this dataset reflect these provisional baselines and are subject to final manual review.
+> [!NOTE]
+> **INTEGRITY NOTICE (STATUS: HUMAN REVIEW COMPLETE)**:
+> All 200 golden evaluation cases have been 100% human-reviewed and verified. Columns named `my_final_*` and `human_review_action` represent verified sovereign human gold ground truth (58 approved, 142 edited).
 
 ---
 

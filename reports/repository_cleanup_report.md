@@ -13,7 +13,7 @@ A full dependency audit was conducted prior to any filesystem modifications (doc
 - **Files Removed:** 4 obsolete, unreferenced, or duplicate files completely purged.
 - **Files Archived:** 30 intermediate, legacy, or superseded iteration artifacts consolidated into `_archive/` with full provenance documented in [archive_manifest.md](file:///c:/Users/vrai2/OneDrive/Desktop/HIVER/reports/archive_manifest.md).
 - **Core Files Preserved:** 64 active production modules, evaluation benchmarks, analytical reports, and unit test suites.
-- **Test Suite Health:** **31/31 unit tests passing** (`python -m unittest discover tests`).
+- **Test Suite Inventory:** **60 unit tests** (`python -m unittest discover tests`). The current environment requires the declared FastAPI and Google GenAI dependencies; the live judge integration test also requires network access to Gemini.
 - **Smoke Tests:** All 5 pipeline validation smoke tests passing with zero errors.
 - **Broken References:** **0** (verified across code, imports, and markdown documentation).
 - **Secrets & Credentials:** **0** (verified with credential scanner; `.env` added to `.gitignore`, placeholder `.env.example` created).
@@ -172,7 +172,7 @@ All smoke test scripts were executed and validated on the clean repository:
 ```bash
 # 1. Full Automated Unit Test Suite
 python -m unittest discover tests
-# Result: Ran 31 tests in 6.697s -> OK (31/31 passing)
+# Current inventory: 60 discovered tests. See README reproduction steps for the required environment and live-judge credential/network prerequisite.
 
 # 2. Raw Dataset Verification
 python scripts/verify_twcs.py

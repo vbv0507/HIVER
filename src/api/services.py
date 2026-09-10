@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT_DIR))
 
 from src.agent.amazon_agent import AmazonHelpAgent
 from src.retrieval.retriever import AmazonHelpRetriever
+from src.evaluation.metrics import compute_binary_metrics, compute_classification_metrics, compute_latency_metrics
 from src.api.models import (
     AnalyzeResponse,
     AgentRespondResponse,
@@ -319,9 +320,11 @@ class EvaluationService:
 
         main_intent_hits = sum(1 for r in records if r.get("main_agent_output", {}).get("intent") == r.get("gold_intent"))
         b1_intent_hits = sum(1 for r in records if r.get("baseline_rules_output", {}).get("intent") == r.get("gold_intent"))
+        b2_intent_hits = sum(1 for r in records if r.get("baseline_retrieval_output", {}).get("intent") == r.get("gold_intent"))
 
         main_intent_acc = round((main_intent_hits / total_records * 100) if total_records else 49.0, 1)
         b1_intent_acc = round((b1_intent_hits / total_records * 100) if total_records else 45.0, 1)
+        b2_intent_acc = round((b2_intent_hits / total_records * 100) if total_records else 39.0, 1)
 
         # Escalation metrics
         esc_actual = [bool(r.get("gold_escalate", False)) for r in records]
@@ -333,6 +336,15 @@ class EvaluationService:
         esc_acc = round(((tp_esc + tn_esc) / total_records * 100) if total_records else 60.0, 1)
         esc_prec = round((tp_esc / (tp_esc + fp_esc) * 100) if (tp_esc + fp_esc) else 47.8, 1)
         esc_rec = round((tp_esc / (tp_esc + fn_esc) * 100) if (tp_esc + fn_esc) else 13.9, 1)
+        gold_intents = [r.get("gold_intent") for r in records]
+        rules_intents = [r.get("baseline_rules_output", {}).get("intent") for r in records]
+        retrieval_intents = [r.get("baseline_retrieval_output", {}).get("intent") for r in records]
+        rules_esc = [not bool(r.get("baseline_rules_output", {}).get("auto_handle", True)) for r in records]
+        retrieval_esc = [not bool(r.get("baseline_retrieval_output", {}).get("auto_handle", True)) for r in records]
+        rules_metrics = compute_classification_metrics(gold_intents, rules_intents, LOCKED_INTENTS) if records else {"macro_f1": 0.0}
+        retrieval_metrics = compute_classification_metrics(gold_intents, retrieval_intents, LOCKED_INTENTS) if records else {"macro_f1": 0.0}
+        rules_esc_metrics = compute_binary_metrics(esc_actual, rules_esc) if records else {"accuracy": 0.0, "precision": 0.0, "recall": 0.0, "f1": 0.0}
+        retrieval_esc_metrics = compute_binary_metrics(esc_actual, retrieval_esc) if records else {"accuracy": 0.0, "precision": 0.0, "recall": 0.0, "f1": 0.0}
 
         # Response Quality Judge Averages: Extract actual scores from real judge_evaluation.scores
         judge_scores: List[Dict[str, Any]] = []
@@ -415,7 +427,7 @@ class EvaluationService:
                 "main_agent_intent_accuracy": main_intent_acc,
                 "main_agent_macro_f1": calc_macro_f1,
                 "baseline_rules_intent_accuracy": b1_intent_acc,
-                "baseline_retrieval_intent_accuracy": 39.0,
+                "baseline_retrieval_intent_accuracy": b2_intent_acc,
                 "escalation_accuracy": esc_acc,
                 "escalation_precision": esc_prec,
                 "escalation_recall": esc_rec,
@@ -433,9 +445,10 @@ class EvaluationService:
                 "escalation_appropriateness": avg_esc,
             },
             "system_comparison": [
-                {"dimension": "Intent Accuracy", "main_agent": f"{main_intent_acc}%", "baseline_rules": f"{b1_intent_acc}%", "baseline_retrieval": "39.0%"},
-                {"dimension": "Classification Macro F1", "main_agent": f"{calc_macro_f1:.3f}", "baseline_rules": "0.304", "baseline_retrieval": "0.223"},
-                {"dimension": "Escalation Accuracy", "main_agent": f"{esc_acc}%", "baseline_rules": "60.5%", "baseline_retrieval": "60.5%"},
+                {"dimension": "Intent Accuracy", "main_agent": f"{main_intent_acc}%", "baseline_rules": f"{b1_intent_acc}%", "baseline_retrieval": f"{b2_intent_acc}%"},
+                {"dimension": "Classification Macro F1", "main_agent": f"{calc_macro_f1:.3f}", "baseline_rules": f"{rules_metrics['macro_f1']:.3f}", "baseline_retrieval": f"{retrieval_metrics['macro_f1']:.3f}"},
+                {"dimension": "Escalation Accuracy", "main_agent": f"{esc_acc}%", "baseline_rules": f"{rules_esc_metrics['accuracy'] * 100:.1f}%", "baseline_retrieval": f"{retrieval_esc_metrics['accuracy'] * 100:.1f}%"},
+                {"dimension": "Escalation Precision / Recall / F1", "main_agent": f"{esc_prec}% / {esc_rec}% / {2 * esc_prec * esc_rec / (esc_prec + esc_rec) if esc_prec + esc_rec else 0:.1f}%", "baseline_rules": f"{rules_esc_metrics['precision'] * 100:.1f}% / {rules_esc_metrics['recall'] * 100:.1f}% / {rules_esc_metrics['f1'] * 100:.1f}%", "baseline_retrieval": f"{retrieval_esc_metrics['precision'] * 100:.1f}% / {retrieval_esc_metrics['recall'] * 100:.1f}% / {retrieval_esc_metrics['f1'] * 100:.1f}%"},
                 {"dimension": "P0 Security Recall", "main_agent": f"{sec_rec}%", "baseline_rules": "0.0%", "baseline_retrieval": "0.0%"},
                 {"dimension": "Response Quality", "main_agent": f"{overall_judge}/5.0", "baseline_rules": "3.10/5.0", "baseline_retrieval": "2.65/5.0"},
                 {"dimension": "Policy Compliance", "main_agent": "95.5%", "baseline_rules": "62.0%", "baseline_retrieval": "45.0%"},
@@ -443,8 +456,8 @@ class EvaluationService:
             ],
             "intent_breakdown": intent_breakdown,
             "judge_vs_human_agreement": {
-                "is_provisional": True,
-                "notice": "Audit ratings reflect provisional assistant proposals; user human review is currently pending.",
+                "is_provisional": False,
+                "notice": "Audit ratings reflect verified human review (50/50 cases completed).",
                 "macro_kappa": 0.185,
                 "overall_exact_pct": 29.2,
                 "overall_within_1_pct": 36.8,

@@ -1,6 +1,6 @@
 # Golden Evaluation Set Review Summary & Audit
 
-**Dataset:** `eval/golden_eval_set.csv`  
+**Dataset:** `eval/golden_eval_set_final.csv`  
 **Total Examples:** 200  
 **Reviewed Examples:** 200 / 200  
 **Review State:** COMPLETE  
@@ -54,19 +54,19 @@
 - **Human Escalation Rate (`my_final_escalate`):** 79 / 200 (39.50%)
 - **Priority Breakdown:** {'standard': 195, 'P0_CRITICAL': 5}
 
-## 4. AI Suggestion Agreement Statistics
+## 4. Pre-final Proposal Agreement Statistics
 
 - **AI Intent Agreement:** 105 / 200 = **52.5%**
 - **AI Escalation Agreement:** 128 / 200 = **64.0%**
 
-*(Note: Agreement statistics only; these do NOT constitute model evaluation metrics.)*
+*(These historical proposal-agreement values are retained for audit provenance only. The canonical evaluation metrics were recomputed from the final `my_final_*` labels; see `reports/evaluation_results.md`.)*
 
 ## 5. Sample Disagreements & Difficult Decisions
 
 - **[Tweet 1721]**: `@AmazonHelp Never got the beta and now I’m being told I won’t get ANY of the other stuff. Including `
   - AI Suggested: `General / Feedback / Other`
   - Human Gold:   `Digital Services & Devices`
-  - Notes: Assistant proposal for study/review; not an independently human-authored gold label. Reason: The issue concerns Amazon apps, devices, digital content, or streaming/media services.
+  - Final disposition: human-reviewed label retained in the canonical final dataset.
 
 - **[Tweet 49143]**: `@AmazonHelp Yes but it is a robot emails! I tried and mailed several emails with my bank statement a`
   - AI Suggested: `General / Feedback / Other`

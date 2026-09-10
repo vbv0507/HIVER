@@ -253,7 +253,9 @@ Step-by-step reproduction from scratch:
 # (Obtain twcs.csv from Kaggle: "Customer Support on Twitter")
 
 # 2. Install dependencies
-pip install -r requirements.txt
+python -m venv .venv
+# Windows PowerShell: .\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 
 # 3. Verify raw dataset integrity
 python scripts/verify_twcs.py
@@ -268,7 +270,7 @@ python scripts/build_retrieval_index.py
 # 6. Run agent CLI test
 python scripts/run_agent.py --text "Where is my package? The tracking hasn't updated in two days."
 
-# 7. Run consolidated manual smoke tests (26 cases across 18 categories)
+# 7. Run consolidated manual smoke tests (30 cases across 18 categories)
 python scripts/run_manual_smoke_tests.py
 
 # 8. Run full automated test suite (60 unit tests)
@@ -277,6 +279,10 @@ python -m unittest discover tests
 # 9. (Optional) Run 200-example evaluation harness with LLM judge
 # Requires GEMINI_API_KEY in .env
 python scripts/run_evaluation.py
+
+# 10. Start the API and open the live dashboard
+python -m uvicorn src.api.main:app --host 127.0.0.1 --port 8000
+# Browse to http://127.0.0.1:8000/dashboard
 ```
 
 ---
@@ -319,7 +325,7 @@ HIVER/
 │   ├── review_human_audit.py           # Interactive CLI tool for human audit review
 │   ├── run_agent.py                    # Canonical single-query / interactive agent runner
 │   ├── run_evaluation.py               # 200-case comparative evaluation harness
-│   ├── run_manual_smoke_tests.py       # Consolidated smoke test suite (26 cases)
+│   ├── run_manual_smoke_tests.py       # Consolidated smoke test suite (30 cases)
 │   ├── sync_human_audit_to_csv.py      # Synchronize reviewed Excel audit to CSV
 │   ├── validate_amazonhelp.py          # Validation checks for extracted corpus
 │   ├── validate_golden_set.py          # Validation checks for golden evaluation set
@@ -384,7 +390,7 @@ python -m unittest discover tests
 ```
 Covers agent routing, paraphrase regressions, leakage prevention, API endpoints, evaluation metrics, and human audit review flows.
 
-### Run Consolidated Smoke Tests (26 Cases Across 18 Categories)
+### Run Consolidated Smoke Tests (30 Cases Across 18 Categories)
 ```bash
 python scripts/run_manual_smoke_tests.py
 ```
@@ -436,5 +442,5 @@ python scripts/validate_judge_human_agreement.py
 - **Golden Evaluation Set**: `eval/golden_eval_set_final.csv` (200 real, verified AmazonHelp customer messages).
 - **Evaluation Harness**: `scripts/run_evaluation.py` with leakage filtering, automated metrics, and live Gemini judge.
 - **Two Baselines**: Rule-based template baseline (`src/baselines/baseline_rules.py`) and nearest-neighbor retrieval baseline (`src/baselines/baseline_retrieval_only.py`).
-- **Analytical Reports**: Intent taxonomy specification (`reports/AmazonHelp_final_taxonomy.md`), comparative benchmark evaluation (`reports/evaluation_results.md`), error analysis (`reports/evaluation_error_analysis.md`), and metric caveat analysis (`reports/headline_metric_caveat.md`).
+- **Analytical Reports**: Submission-ready overview (`reports/submission_report.md`), intent taxonomy specification (`reports/AmazonHelp_final_taxonomy.md`), comparative benchmark evaluation (`reports/evaluation_results.md`), error analysis (`reports/evaluation_error_analysis.md`), and metric caveat analysis (`reports/headline_metric_caveat.md`).
 - **Engineering Decision Log**: `eval/decision_log.md` detailing architectural choices and trade-offs.

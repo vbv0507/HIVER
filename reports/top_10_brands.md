@@ -1,6 +1,7 @@
 # Customer Support Dataset: Top 10 Brands Exploration Report
 
 - **Dataset Scanned**: 4,306 tweets
+- **Historical exploration note:** This small scan was an early brand-selection exploration, not the final data profile. The verified TWCS corpus contains 2.81M rows; later extraction found 373,438 AmazonHelp tweets and 82,556 threads. AmazonHelp remains the selected brand, but the counts in this report must not be used as final corpus statistics.
 - **Purpose**: Select the best candidate brand for training/evaluating the customer support agent.
 
 ## 1. Top 10 Brands Summary Table

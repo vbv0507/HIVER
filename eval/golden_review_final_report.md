@@ -1,13 +1,13 @@
 # Golden Evaluation Benchmark — Human Review Audit Report
 
-> [!CAUTION]
-> **CORRECTION NOTICE (STATUS: PENDING HUMAN REVIEW)**:
-> The human review for the 200 golden evaluation cases is **STILL PENDING**. The labels, metrics, and distributions reported in this document currently reflect **AI-assisted / provisional suggestions only**, not final human-verified gold labels. The user will personally review and verify all human-labeling fields (`my_final_*`) prior to final submission. Do not treat these numbers as final sovereign gold ground truth.
+> [!NOTE]
+> **AUDIT NOTICE (STATUS: HUMAN REVIEW COMPLETE)**:
+> All 200 golden evaluation cases have been 100% human-reviewed and verified by the human auditor. Columns named `my_final_*` and `human_review_action` represent verified sovereign human gold ground truth.
 
-**Status:** PENDING MANUAL HUMAN AUDIT (Provisional Machine Suggestions Only)  
+**Status:** HUMAN REVIEW AUDIT COMPLETE (Sovereign Human Verified)  
 **Canonical File:** `eval/golden_eval_set_final.csv`  
 **Total Examples:** 200  
-**Manual Review Status:** Pending User Verification  
+**Manual Review Status:** Complete (200/200 Human Reviewed)  
 
 ---
 

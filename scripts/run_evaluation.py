@@ -455,88 +455,38 @@ def run_pipeline():
 
     # Build Excel Review Interface for Audit Sample if not present
     if not HUMAN_AUDIT_XLSX.exists():
-    ws = wb.active
-    ws.title = "Judge-Human Audit"
-    ws.views.sheetView[0].showGridLines = True
-
-    # Title & Instructions
-    ws.merge_cells("A1:O1")
-    title_cell = ws["A1"]
-    title_cell.value = "STEP 4: RESPONSE QUALITY HUMAN AUDIT & JUDGE AGREEMENT (50 SAMPLES)"
-    title_cell.font = Font(name="Calibri", size=14, bold=True, color="FFFFFF")
-    title_cell.fill = PatternFill(start_color="1E3A8A", end_color="1E3A8A", fill_type="solid")
-    title_cell.alignment = Alignment(horizontal="center", vertical="center")
-    ws.row_dimensions[1].height = 32
-
-    ws.merge_cells("A2:O2")
-    inst_cell = ws["A2"]
-    inst_cell.value = "INSTRUCTIONS: Rate columns J through N (Green) on a scale of 1 to 5 (1=Critical Failure, 5=Excellent). Human columns start empty. Do not edit machine columns."
-    inst_cell.font = Font(name="Calibri", size=10, italic=True, color="1E293B")
-    inst_cell.fill = PatternFill(start_color="F1F5F9", end_color="F1F5F9", fill_type="solid")
-    inst_cell.alignment = Alignment(horizontal="left", vertical="center")
-    ws.row_dimensions[2].height = 22
-
-    # Headers on row 3
-    for col_idx, h in enumerate(audit_headers, 1):
-        c = ws.cell(row=3, column=col_idx, value=h)
-        c.font = Font(name="Calibri", size=10, bold=True, color="FFFFFF")
-        if h.startswith("human_"):
-            c.fill = PatternFill(start_color="059669", end_color="059669", fill_type="solid")  # Emerald for human
-        elif h.startswith("llm_judge_"):
-            c.fill = PatternFill(start_color="0284C7", end_color="0284C7", fill_type="solid")  # Blue for LLM judge
-        else:
-            c.fill = PatternFill(start_color="334155", end_color="334155", fill_type="solid")
-        c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-
-    ws.row_dimensions[3].height = 28
-
-    # Populate rows
-    thin_border = Border(
-        left=Side(style="thin", color="CBD5E1"),
-        right=Side(style="thin", color="CBD5E1"),
-        top=Side(style="thin", color="CBD5E1"),
-        bottom=Side(style="thin", color="CBD5E1"),
-    )
-
-    for r_idx, item in enumerate(audit_sample, 4):
-        ev_summary = " | ".join(
-            [f"[{ev['score']}] {ev['customer_message'][:40]} -> {ev['historical_response'][:40]}" for ev in item["retrieved_evidence"][:2]]
-        )
-        je = item.get("judge_evaluation", {})
-        je_scores = je.get("scores", je)
-        row_vals = [
-            int(item["message_id"]),
-            item["original_text"],
-            item["main_agent_output"]["draft_reply"],
-            ev_summary,
-            je_scores.get("correctness", ""),
-            je_scores.get("helpfulness", ""),
-            je_scores.get("groundedness", ""),
-            je_scores.get("policy", ""),
-            je_scores.get("escalation", ""),
-            "", "", "", "", "", "",
-        ]
-        for col_idx, val in enumerate(row_vals, 1):
-            cell = ws.cell(row=r_idx, column=col_idx, value=val)
-            cell.border = thin_border
-            cell.font = Font(name="Calibri", size=9)
-            if col_idx in [1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]:
-                cell.alignment = Alignment(horizontal="center", vertical="center")
-            else:
-                cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
-
-            if 10 <= col_idx <= 14:
-                cell.fill = PatternFill(start_color="F0FDF4", end_color="F0FDF4", fill_type="solid")
-
-        ws.row_dimensions[r_idx].height = 45
-
-    # Column widths
-    widths = [12, 40, 45, 40, 10, 10, 10, 10, 10, 12, 12, 12, 12, 12, 30]
-    for i, w in enumerate(widths, 1):
-        ws.column_dimensions[get_column_letter(i)].width = w
-
-    wb.save(HUMAN_AUDIT_XLSX)
-    print(f"✓ Saved interactive audit workbook to {HUMAN_AUDIT_XLSX}")
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Judge-Human Audit"
+        ws.views.sheetView[0].showGridLines = True
+        ws.merge_cells("A1:O1")
+        ws["A1"] = "STEP 4: RESPONSE QUALITY HUMAN AUDIT & JUDGE AGREEMENT (50 SAMPLES)"
+        ws["A1"].font = Font(name="Calibri", size=14, bold=True, color="FFFFFF")
+        ws["A1"].fill = PatternFill(start_color="1E3A8A", end_color="1E3A8A", fill_type="solid")
+        ws.merge_cells("A2:O2")
+        ws["A2"] = "INSTRUCTIONS: Rate human columns on a scale of 1 to 5. Do not edit machine columns."
+        ws["A2"].alignment = Alignment(wrap_text=True)
+        for col_idx, header in enumerate(audit_headers, 1):
+            cell = ws.cell(row=3, column=col_idx, value=header)
+            cell.font = Font(name="Calibri", size=10, bold=True, color="FFFFFF")
+            cell.fill = PatternFill(start_color="059669" if header.startswith("human_") else "0284C7" if header.startswith("llm_judge_") else "334155", fill_type="solid")
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        border = Border(*(Side(style="thin", color="CBD5E1") for _ in range(4)))
+        for row_idx, item in enumerate(audit_sample, 4):
+            evidence = " | ".join(f"[{e['score']}] {e['customer_message'][:40]} -> {e['historical_response'][:40]}" for e in item["retrieved_evidence"][:2])
+            scores = item.get("judge_evaluation", {}).get("scores", item.get("judge_evaluation", {}))
+            values = [item["message_id"], item["original_text"], item["main_agent_output"]["draft_reply"], evidence, scores.get("correctness", ""), scores.get("helpfulness", ""), scores.get("groundedness", ""), scores.get("policy", ""), scores.get("escalation", ""), "", "", "", "", "", ""]
+            for col_idx, value in enumerate(values, 1):
+                cell = ws.cell(row=row_idx, column=col_idx, value=value)
+                cell.border = border
+                cell.alignment = Alignment(horizontal="center" if col_idx in [1, 5, 6, 7, 8, 9] else "left", vertical="center", wrap_text=True)
+                if col_idx >= 10:
+                    cell.fill = PatternFill(start_color="F0FDF4", fill_type="solid")
+            ws.row_dimensions[row_idx].height = 45
+        for col_idx, width in enumerate([12, 40, 45, 40, 10, 10, 10, 10, 10, 12, 12, 12, 12, 12, 30], 1):
+            ws.column_dimensions[get_column_letter(col_idx)].width = width
+        wb.save(HUMAN_AUDIT_XLSX)
+        print(f"✓ Saved interactive audit workbook to {HUMAN_AUDIT_XLSX}")
 
     # 7. Generate reports/evaluation_results.md
     print(f"Generating comparative report at {RESULTS_REPORT}...")
@@ -554,7 +504,7 @@ def run_pipeline():
 
     # 9. Generate reports/headline_metric_caveat.md
     print(f"Generating headline metric caveat report at {CAVEAT_REPORT}...")
-    gen_headline_caveat_report(main_intent_metrics, main_esc_metrics, main_sec_metrics, judge_stats)
+    gen_headline_caveat_report(main_intent_metrics, main_esc_metrics, main_sec_metrics, judge_stats, rules_esc_metrics, ret_esc_metrics)
 
     print("\n" + "=" * 75)
     print("EVALUATION PIPELINE EXECUTION COMPLETE")
@@ -638,13 +588,12 @@ The response quality was evaluated across 5 core dimensions using a fixed 1–5 
 
 ---
 
-## 4. Human Review & Audit Layer
+## 4. Completed Human Review & Audit Layer
 
-To validate the LLM Judge scores without fabricating human ratings:
-- A stratified subset of **50 golden examples** was selected using deterministic `seed=42`.
-- Exported to `eval/judge_human_audit.csv` and `eval/judge_human_review.xlsx`.
-- Human rating columns are initialized **strictly empty**.
-- To verify alignment once human annotations are filled, run:
+- All **200/200** golden labels in `my_final_*` were human-reviewed.
+- All **50/50** judge-human audit cases have completed human ratings in the canonical review workbook.
+- Judge-human agreement is intentionally reported separately by the validation script because it measures judge calibration, not agent correctness.
+- To reproduce the agreement calculation, run:
   ```bash
   python scripts/validate_judge_human_agreement.py
   ```
@@ -741,7 +690,7 @@ This report investigates the top failure categories, boundary confusions, and ed
         f.write(content)
 
 
-def gen_headline_caveat_report(m_intent, m_esc, m_sec, judge_stats):
+def gen_headline_caveat_report(m_intent, m_esc, m_sec, judge_stats, rules_esc, ret_esc):
     content = f"""# Headline Metric Caveats & Evaluation Limitations Report (Step 4)
 
 > [!WARNING]
@@ -796,6 +745,21 @@ The main agent achieved an **Escalation Accuracy of {m_esc['accuracy']*100:.1f}%
 - In automated customer support, an agent can achieve 100% security recall by simply escalating everything to humans. Doing so, however, destroys customer self-service ROI.
 - Conversely, maximizing auto-handling can lead to catastrophic brand and security breaches if account takeover reports are handled by a bot.
 - **The True Operational Metric:** Balancing high security recall (100%) while preserving routine informational auto-handling (39.5% human escalation rate).
+
+---
+
+## 6. Why Escalation Accuracy Is a Misleading Headline
+
+The final human labels contain **79/200 (39.5%)** escalation cases and **121/200 (60.5%)** non-escalation cases. Both baselines hardcode `auto_handle=True`, so they never escalate. Their apparent accuracy is therefore simply the non-escalation base rate: **{rules_esc['accuracy']*100:.1f}%** for Rules and **{ret_esc['accuracy']*100:.1f}%** for Nearest Neighbor, versus the main agent's **{m_esc['accuracy']*100:.1f}%**.
+
+| Escalation metric | Main agent | Rules baseline | Nearest-neighbor baseline |
+| :--- | :---: | :---: | :---: |
+| Accuracy | {m_esc['accuracy']*100:.1f}% | {rules_esc['accuracy']*100:.1f}% | {ret_esc['accuracy']*100:.1f}% |
+| Precision | {m_esc['precision']:.3f} | {rules_esc['precision']:.3f} | {ret_esc['precision']:.3f} |
+| Recall | {m_esc['recall']:.3f} | {rules_esc['recall']:.3f} | {ret_esc['recall']:.3f} |
+| F1 | {m_esc['f1']:.3f} | {rules_esc['f1']:.3f} | {ret_esc['f1']:.3f} |
+
+Accuracy rewards the majority “do not escalate” outcome and does not show whether a system identifies any cases that need a human. For this operational decision, escalation **F1** (with its precision and recall components) is the meaningful comparison: the baselines score zero because they identify none of the 79 required escalations, while the main agent has non-zero precision, recall, and F1 from its deterministic security, financial-dispute, human-request, and low-evidence policy rules.
 """
 
     with open(CAVEAT_REPORT, "w", encoding="utf-8") as f:
