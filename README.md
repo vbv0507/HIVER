@@ -185,8 +185,8 @@ The evaluation harness (`scripts/run_evaluation.py`) benchmarks the agent agains
 
 | Evaluation Dimension | Metric | Main Agent | Baseline 1 (Rules) | Baseline 2 (Nearest-Neighbor) |
 | :--- | :--- | :---: | :---: | :---: |
-| **Intent Classification** | Accuracy | **79.5%** | 45.0% | 39.0% |
-| | Macro F1 | **0.752** | 0.304 | 0.223 |
+| **Intent Classification** | Accuracy | **79.5%** | 45.0% | 41.5% |
+| | Macro F1 | **0.752** | 0.304 | 0.221 |
 | **Language & State** | Language Accuracy | **94.5%** | N/A | N/A |
 | | State Macro F1 | **0.338** | N/A | N/A |
 | **Escalation Decision** | Accuracy | **62.0%** | 60.5% | 60.5% |
@@ -206,8 +206,8 @@ The evaluation harness (`scripts/run_evaluation.py`) benchmarks the agent agains
 | | Policy Compliance Rate | **95.5%** | 62.0% | 45.0% |
 | **Retrieval** | Evidence Availability Rate| **95.0%** | N/A | 100.0% |
 | | Top-1 Hit Rate | **41.5%** | N/A | 34.0% |
-| **Latency** | Median (p50) | **24.46 ms** | 0.08 ms | 22.41 ms |
-| | 95th Percentile (p95) | **31.76 ms** | 0.16 ms | 29.64 ms |
+| **Latency** | Median (p50) | **23.82 ms** | 0.07 ms | 21.49 ms |
+| | 95th Percentile (p95) | **39.1 ms** | 0.15 ms | 33.63 ms |
 
 ### LLM-as-a-Judge Rubric
 The LLM judge (`scripts/llm_judge.py`) evaluates response quality using Google Gemini (`gemini-3.5-flash-lite`) across 5 dimensions on a 1–5 scale:
@@ -285,6 +285,8 @@ python -m uvicorn src.api.main:app --host 127.0.0.1 --port 8000
 # Browse to http://127.0.0.1:8000/dashboard
 ```
 
+For a full fresh-environment verification log—including timings, per-step pass/fail status, and known limitations—see [`reports/reproducibility_verification.md`](reports/reproducibility_verification.md).
+
 ---
 
 ## 12. Project Structure
@@ -357,7 +359,8 @@ HIVER/
     ├── AmazonHelp_final_taxonomy.md    # Authoritative 10-intent taxonomy specification
     ├── evaluation_results.md           # Benchmark evaluation report with baseline comparison
     ├── evaluation_error_analysis.md    # Categorized failure modes & boundary audits
-    └── headline_metric_caveat.md       # Caveat analysis on support distribution skew
+    ├── headline_metric_caveat.md       # Caveat analysis on support distribution skew
+    └── reproducibility_verification.md # Fresh-environment verification log and timing record
 ```
 
 ---

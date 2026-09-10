@@ -163,7 +163,7 @@ This log records the main engineering decisions I made while building the Amazon
 2. Delivery problem vocabulary lacked common customer paraphrases (e.g. "package is missing", "marked delivered but nothing at door", "delivery attempted").
 3. Unweighted pattern matching fell back aggressively to `General / Feedback / Other` whenever multi-word phrasing deviated from rigid regex templates.
 
-**Trade-off:** Rather than introducing a heavy, non-deterministic deep learning framework (e.g., fine-tuned BERT or local transformers) that would introduce GPU dependencies and slow inference latency, I retained a deterministic, pattern-weighted feature scoring engine with normalized softmax probabilities and explicit boundary arbitration (Logistics > Tracking, Logistics > Prime, Seller Defect > Returns). This preserved ultra-low inference latency (p50: 24.46 ms) and 100% auditable routing logic.
+**Trade-off:** Rather than introducing a heavy, non-deterministic deep learning framework (e.g., fine-tuned BERT or local transformers) that would introduce GPU dependencies and slow inference latency, I retained a deterministic, pattern-weighted feature scoring engine with normalized softmax probabilities and explicit boundary arbitration (Logistics > Tracking, Logistics > Prime, Seller Defect > Returns). This preserved ultra-low inference latency (p50: 23.82 ms) and 100% auditable routing logic.
 
 **Impact on Accuracy, Macro F1, and Safety:**
 - **Intent Accuracy:** Improved from **49.0% to 79.5%** (+30.5 percentage points absolute improvement).
@@ -175,20 +175,20 @@ This log records the main engineering decisions I made while building the Amazon
 
 ---
 
-## Decision 17: Evaluate Escalation with F1, Not Accuracy Alone
+## Decision 17: Match the Retrieval Index to the Evaluated 20,000-Pair Corpus
 
-**Decision:** I report escalation precision, recall, and F1 alongside accuracy, and treat F1 as the primary comparison metric.
+**Decision:** I corrected the retrieval-index build default from 40,000 to the documented 20,000 resolution pairs, then reran the complete 200-case evaluation rather than assuming the index-size change was harmless.
 
-**Why:** Final human labels require escalation for 79 of 200 cases. Both baselines always auto-handle, which earns 60.5% accuracy by predicting the majority class while finding zero required escalations. Accuracy therefore disguises their lack of useful escalation behavior.
+**Why:** Retrieval evidence scores contribute to the policy's low-evidence escalation threshold. The re-evaluation confirmed that the main agent's intent accuracy (79.5%), macro F1 (0.752), escalation metrics (62.0% accuracy; 0.556 precision; 0.190 recall; 0.283 F1), security precision/recall (1.000 / 100.0%), and retrieval coverage (95.0% / 41.5% top-1 hit rate) were unchanged. The nearest-neighbor baseline did shift slightly, from 39.0% to 41.5% intent accuracy and from 0.223 to 0.221 macro F1, which confirmed that the check was necessary and that the main-agent results are robust to the corrected corpus size.
 
-**Trade-off:** F1 makes the main agent's low recall visible (0.190) rather than presenting an overly favorable score, but it gives a faithful decision-quality comparison.
+**Trade-off:** Rebuilding the index and rerunning evaluation adds local preprocessing and verification time, but it prevents a configuration mismatch from being presented as a reproducible benchmark.
 
 ---
 
-## Decision 18: Ship a Dependency-Free Dashboard Served by FastAPI
+## Decision 18: Treat Reproducibility as a Tested Deliverable
 
-**Decision:** I added a single HTML dashboard at `/dashboard` rather than a separate JavaScript build.
+**Decision:** I performed a dedicated hardening pass: removed machine-specific paths, made scripts resolve project-root paths, verified installation and the full pipeline in a genuinely fresh virtual environment, and documented the results in `reports/reproducibility_verification.md`.
 
-**Why:** It calls the real FastAPI inference and evaluation endpoints directly while keeping the submission easy to run from a clean checkout.
+**Why:** This project may be inspected first by automated cloning and execution rather than a human reviewer. A pipeline that only works in the author's populated environment is not a reproducible deliverable, regardless of model quality.
 
-**Trade-off:** The UI is intentionally compact; it demonstrates live behavior and final metrics without introducing a frontend framework or build pipeline.
+**Trade-off:** Pinning and validating the direct dependencies plus maintaining path-safe scripts adds documentation and maintenance overhead, but it substantially reduces reviewer setup risk and makes failures actionable instead of silent.
