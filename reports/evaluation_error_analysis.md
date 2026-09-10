@@ -57,10 +57,10 @@ Zero errors identified in this boundary category across the benchmark.
 | Tweet ID | Customer Text | Gold Intent | Predicted / Detail |
 | :--- | :--- | :--- | :--- |
 | `1721` | `@AmazonHelp Never got the beta and now I’m being told I won’t get ANY ...` | `Digital Services & Devices` | `Score: 0.137` |
-| `77535` | `@AmazonHelp It must be. I've had the same email address for years and ...` | `General / Feedback / Other` | `Score: 0.137` |
+| `77535` | `@AmazonHelp It must be. I've had the same email address for years and ...` | `General / Feedback / Other` | `Score: 0.138` |
+| `291347` | `@AmazonHelp If you are unable to check in your back-end &amp; have no ...` | `General / Feedback / Other` | `Score: 0.148` |
 | `423252` | `@115850 Ordered Crossbeats Raga Earphone Two months Back. The Item is ...` | `Seller & Product Quality` | `Score: 0.143` |
 | `476843` | `@115830 Any reason why normal service has dropped over last few months...` | `Delivery Problem & Logistics` | `Score: 0.131` |
-| `649952` | `Amazonで別日に注文したやつが、一緒の段ボールにはいって送られて来て感動した...` | `General / Feedback / Other` | `Score: 0.000` |
 
 **Root Cause & Analysis:**
 Very terse customer tweets (e.g. '@AmazonHelp order') fail to produce strong TF-IDF n-gram matches. The escalation policy correctly refuses to auto-handle these low-evidence items.

@@ -63,9 +63,12 @@ def main():
         print(f"[Agent Runner] Loading AmazonHelp AI Support Agent (Evaluation Mode: {eval_mode})...")
         agent = AmazonHelpAgent(evaluation_mode=eval_mode)
 
-    if args.text:
-        print(f"\n[Customer Input]: {args.text}")
-        output = agent.process_message(args.text)
+    if args.text is not None:
+        customer_text = args.text.strip()
+        if not customer_text:
+            parser.error("--text must contain at least one non-whitespace character")
+        print(f"\n[Customer Input]: {customer_text}")
+        output = agent.process_message(customer_text)
         print("\n[Structured Agent Output]:")
         print(format_output(output))
         return

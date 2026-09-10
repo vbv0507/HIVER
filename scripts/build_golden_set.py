@@ -34,10 +34,11 @@ if sys.stdout.encoding != "utf-8":
 # Ensure workspace root is in sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-DATA_PROCESSED_DIR = Path("data/processed")
+ROOT_DIR = Path(__file__).resolve().parent.parent
+DATA_PROCESSED_DIR = ROOT_DIR / "data" / "processed"
 TWEETS_PATH = DATA_PROCESSED_DIR / "AmazonHelp_tweets.csv"
 THREADS_PATH = DATA_PROCESSED_DIR / "AmazonHelp_threads.jsonl"
-EVAL_DIR = Path("eval")
+EVAL_DIR = ROOT_DIR / "eval"
 
 GOLDEN_CSV_PATH = EVAL_DIR / "golden_eval_set.csv"
 EXCLUSIONS_JSON_PATH = EVAL_DIR / "golden_thread_exclusions.json"

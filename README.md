@@ -443,4 +443,5 @@ python scripts/validate_judge_human_agreement.py
 - **Evaluation Harness**: `scripts/run_evaluation.py` with leakage filtering, automated metrics, and live Gemini judge.
 - **Two Baselines**: Rule-based template baseline (`src/baselines/baseline_rules.py`) and nearest-neighbor retrieval baseline (`src/baselines/baseline_retrieval_only.py`).
 - **Analytical Reports**: Submission-ready overview (`reports/submission_report.md`), intent taxonomy specification (`reports/AmazonHelp_final_taxonomy.md`), comparative benchmark evaluation (`reports/evaluation_results.md`), error analysis (`reports/evaluation_error_analysis.md`), and metric caveat analysis (`reports/headline_metric_caveat.md`).
+- **Reproducibility Verification**: `reports/reproducibility_verification.md` documents the fresh-environment hardening checks, full-corpus run timings, and remaining external prerequisites.
 - **Engineering Decision Log**: `eval/decision_log.md` detailing architectural choices and trade-offs.

@@ -30,9 +30,10 @@ if sys.stdout.encoding != "utf-8":
     except Exception:
         pass
 
-RAW_DATA_PATH = Path("data/raw/twcs.csv")
-PROCESSED_DIR = Path("data/processed")
-REPORTS_DIR = Path("reports")
+ROOT_DIR = Path(__file__).resolve().parent.parent
+RAW_DATA_PATH = ROOT_DIR / "data" / "raw" / "twcs.csv"
+PROCESSED_DIR = ROOT_DIR / "data" / "processed"
+REPORTS_DIR = ROOT_DIR / "reports"
 
 TWEETS_CSV_PATH = PROCESSED_DIR / "AmazonHelp_tweets.csv"
 CONVERSATIONS_CSV_PATH = PROCESSED_DIR / "AmazonHelp_conversations.csv"

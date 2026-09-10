@@ -2,7 +2,7 @@
 
 **Verification Date:** September 9, 2026  
 **Target File:** `data/raw/twcs.csv`  
-**Verification Script:** [verify_twcs.py](file:///c:/Users/vrai2/OneDrive/Desktop/HIVER/scripts/verify_twcs.py)  
+**Verification Script:** [`scripts/verify_twcs.py`](../scripts/verify_twcs.py)  
 **Status:** **PASSED — REAL TWCS DATASET VERIFIED**
 
 ---

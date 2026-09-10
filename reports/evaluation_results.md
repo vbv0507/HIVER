@@ -14,8 +14,8 @@
 
 | Evaluation Dimension | Metric | Main AI Agent | Baseline 1 (Rules) | Baseline 2 (Nearest-Neighbor) |
 | :--- | :--- | :---: | :---: | :---: |
-| **Intent Classification** | Accuracy | **79.5%** | 45.0% | 39.0% |
-| | Macro F1 | **0.752** | 0.304 | 0.223 |
+| **Intent Classification** | Accuracy | **79.5%** | 45.0% | 41.5% |
+| | Macro F1 | **0.752** | 0.304 | 0.221 |
 | **Language & State** | Language Accuracy | **94.5%** | N/A | N/A |
 | | State Macro F1 | **0.338** | N/A | N/A |
 | **Escalation Decision** | Accuracy | **62.0%** | 60.5% | 60.5% |
@@ -35,8 +35,8 @@
 | | Policy Compliance Rate | **95.5%** | 62.0% | 45.0% |
 | **Retrieval Performance** | Evidence Availability Rate | **95.0%** | N/A | 100.0% |
 | | Top-1 Hit Rate | **41.5%** | N/A | 34.0% |
-| **Latency** | Median Latency (p50) | **28.25 ms** | 0.08 ms | 27.41 ms |
-| | 95th Percentile (p95) | **39.16 ms** | 0.2 ms | 42.54 ms |
+| **Latency** | Median Latency (p50) | **23.82 ms** | 0.07 ms | 21.49 ms |
+| | 95th Percentile (p95) | **39.1 ms** | 0.15 ms | 33.63 ms |
 
 *(Note: Baselines 1 & 2 do not natively produce conversation state, language detection, or P0 security alert triage; metrics are marked N/A or baseline-derived).*
 

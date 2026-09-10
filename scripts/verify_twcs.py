@@ -22,7 +22,8 @@ if sys.stdout.encoding != "utf-8":
     except Exception:
         pass
 
-RAW_DATA_PATH = Path("data/raw/twcs.csv")
+ROOT_DIR = Path(__file__).resolve().parent.parent
+RAW_DATA_PATH = ROOT_DIR / "data" / "raw" / "twcs.csv"
 
 EXPECTED_COLUMNS = [
     "tweet_id",

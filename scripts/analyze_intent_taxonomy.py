@@ -24,8 +24,9 @@ if sys.stdout.encoding != "utf-8":
     except Exception:
         pass
 
-INPUT_TWEETS_PATH = Path("data/processed/AmazonHelp_tweets.csv")
-REPORT_PATH = Path("reports/AmazonHelp_intent_taxonomy_analysis.md")
+ROOT_DIR = Path(__file__).resolve().parent.parent
+INPUT_TWEETS_PATH = ROOT_DIR / "data" / "processed" / "AmazonHelp_tweets.csv"
+REPORT_PATH = ROOT_DIR / "reports" / "AmazonHelp_intent_taxonomy_analysis.md"
 RANDOM_SEED = 42
 SAMPLE_SIZE = 500
 

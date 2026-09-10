@@ -10,7 +10,8 @@ from pathlib import Path
 from typing import Generator, List, Optional, Union
 import pandas as pd
 
-DEFAULT_DATA_PATH = Path("data/raw/twcs.csv")
+ROOT_DIR = Path(__file__).resolve().parent.parent
+DEFAULT_DATA_PATH = ROOT_DIR / "data" / "raw" / "twcs.csv"
 
 # Standard schema for twcs.csv
 TWCS_DTYPES = {

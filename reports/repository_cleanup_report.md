@@ -8,10 +8,10 @@
 
 ## 1. Executive Summary
 
-A full dependency audit was conducted prior to any filesystem modifications (documented in [repository_audit_before_cleanup.md](file:///c:/Users/vrai2/OneDrive/Desktop/HIVER/reports/repository_audit_before_cleanup.md)).
+A full dependency audit was conducted prior to any filesystem modifications (documented in [repository_audit_before_cleanup.md](repository_audit_before_cleanup.md)).
 
 - **Files Removed:** 4 obsolete, unreferenced, or duplicate files completely purged.
-- **Files Archived:** 30 intermediate, legacy, or superseded iteration artifacts consolidated into `_archive/` with full provenance documented in [archive_manifest.md](file:///c:/Users/vrai2/OneDrive/Desktop/HIVER/reports/archive_manifest.md).
+- **Files Archived:** 30 intermediate, legacy, or superseded iteration artifacts consolidated into `_archive/` with full provenance documented in [archive_manifest.md](archive_manifest.md).
 - **Core Files Preserved:** 64 active production modules, evaluation benchmarks, analytical reports, and unit test suites.
 - **Test Suite Inventory:** **60 unit tests** (`python -m unittest discover tests`). The current environment requires the declared FastAPI and Google GenAI dependencies; the live judge integration test also requires network access to Gemini.
 - **Smoke Tests:** All 5 pipeline validation smoke tests passing with zero errors.

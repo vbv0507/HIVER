@@ -124,10 +124,19 @@ def run_pipeline():
     main_agent = AmazonHelpAgent(evaluation_mode=True)
     baseline_rules = RuleTemplateBaseline()
     baseline_retrieval = NearestNeighborBaseline(retriever=main_agent.retriever, evaluation_mode=True)
-    judge = ResponseQualityJudge(
-        model_name="gemini-3.5-flash-lite",
-        max_retries=judge_max_retries,
-    )
+    try:
+        judge = ResponseQualityJudge(
+            model_name="gemini-3.5-flash-lite",
+            max_retries=judge_max_retries,
+        )
+    except ValueError as exc:
+        print(
+            "\n❌ Evaluation requires a live Gemini judge. Set GEMINI_API_KEY or GOOGLE_API_KEY "
+            "in the environment (or project .env), then rerun scripts/run_evaluation.py.\n"
+            f"Details: {exc}",
+            file=sys.stderr,
+        )
+        return 2
 
     eval_records = []
     main_latencies = []
@@ -302,8 +311,8 @@ def run_pipeline():
     config_data = {
         "evaluation_seed": SEED,
         "golden_examples_count": len(eval_records),
-        "canonical_source": str(CANONICAL_GOLDEN_CSV),
-        "exclusions_file": str(EXCLUSIONS_JSON),
+        "canonical_source": str(CANONICAL_GOLDEN_CSV.relative_to(ROOT_DIR)).replace("\\", "/"),
+        "exclusions_file": str(EXCLUSIONS_JSON.relative_to(ROOT_DIR)).replace("\\", "/"),
         "retrieval_top_k": TOP_K,
         "judge_max_workers": judge_max_workers,
         "judge_delay_seconds": judge_delay_seconds,
@@ -767,4 +776,6 @@ Accuracy rewards the majority “do not escalate” outcome and does not show wh
 
 
 if __name__ == "__main__":
-    run_pipeline()
+    result = run_pipeline()
+    if isinstance(result, int):
+        sys.exit(result)

@@ -1,8 +1,8 @@
 {
   "evaluation_seed": 42,
   "golden_examples_count": 200,
-  "canonical_source": "C:\\Users\\vrai2\\OneDrive\\Desktop\\HIVER\\eval\\golden_eval_set_final.csv",
-  "exclusions_file": "C:\\Users\\vrai2\\OneDrive\\Desktop\\HIVER\\eval\\golden_thread_exclusions.json",
+  "canonical_source": "eval/golden_eval_set_final.csv",
+  "exclusions_file": "eval/golden_thread_exclusions.json",
   "retrieval_top_k": 3,
   "judge_max_workers": 1,
   "judge_delay_seconds": 1.5,

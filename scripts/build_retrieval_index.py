@@ -30,7 +30,9 @@ def main():
     print("STEP 3: BUILDING AMAZONHELP RESOLUTION RETRIEVAL INDEX")
     print("=" * 75)
 
-    limit = int(sys.argv[1]) if len(sys.argv) > 1 else 40000
+    # The committed benchmark and documentation use a 20,000-pair corpus.
+    # Keep the default aligned so a clean README reproduction matches them.
+    limit = int(sys.argv[1]) if len(sys.argv) > 1 else 20000
     print(f"Targeting up to {limit:,} informative resolution pairs...")
 
     # 1. Build corpus

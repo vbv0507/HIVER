@@ -96,6 +96,6 @@ Agreement statistics describe alignment between assistant proposals and final hu
 
 ## 6. Verification and Integrity Sign-Off
 
-- Pre-review datasets ([golden_eval_set_pre_review_backup.csv](file:///eval/golden_eval_set_pre_review_backup.csv)) remain intact and unmodified.
-- Leakage exclusion index ([golden_thread_exclusions.json](file:///eval/golden_thread_exclusions.json)) locks 2,027 historical conversation tweets to prevent RAG leakage during benchmark evaluation.
+- The pre-review dataset remains documented in the review workflow; the canonical submission dataset is `golden_eval_set_final.csv`.
+- Leakage exclusion index [`golden_thread_exclusions.json`](golden_thread_exclusions.json) locks 2,027 historical conversation tweets to prevent RAG leakage during benchmark evaluation.
 - All 200 records are formatted with uniform schemas and zero empty values in final fields.
