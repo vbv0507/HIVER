@@ -8,7 +8,7 @@ Evaluates main-agent responses against a fixed 5-dimension rubric (scale 1-5):
 4. Policy Compliance: Adheres to security boundaries (no public credential requests, safe DM transfer).
 5. Appropriateness of Escalation: Correct triage of P0 security/fraud vs. routine deflection.
 
-Uses an external LLM API (Google Gemini 1.5 Flash by default).
+Uses an external LLM API (Google Gemini gemini-3.5-flash-lite by default).
 Strictly requires GEMINI_API_KEY (or GOOGLE_API_KEY) in environment or .env.
 If the API key is missing, FAILS clearly — local heuristic fallback is strictly disabled.
 """
@@ -185,7 +185,7 @@ def validate_and_parse_judge_json(raw_text: str) -> Dict[str, Any]:
 class ResponseQualityJudge:
     """
     Real External LLM Judge Engine.
-    Connects to external LLM API (Google Gemini 1.5 Flash).
+    Connects to external LLM API (Google Gemini gemini-3.5-flash-lite).
     Strictly requires GEMINI_API_KEY (or GOOGLE_API_KEY) in environment or .env.
     Fails clearly if key is missing — NO local heuristic fallback.
     """

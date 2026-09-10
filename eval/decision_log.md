@@ -151,3 +151,25 @@ This log records the main engineering decisions I made while building the Amazon
 **Why:** Putting an LLM key in client code would make it visible to anyone using the application. Keeping the key behind the backend service gives me one controlled point for API access, logging, and error handling.
 
 **Trade-off:** Server-side credential management requires running the backend or CLI directly rather than a standalone script without an environment, but the separation is the safer design.
+
+---
+
+## Decision 16: Boundary-Arbitrated Lexical Classifier with Calibrated Softmax Scoring
+
+**Decision:** I upgraded the intent classification architecture from brittle single-keyword matching to a boundary-arbitrated, weighted lexical scoring system with normalized softmax confidence calibration and explicit multi-domain ambiguity detection.
+
+**Why:** The initial baseline classifier achieved only 49.0% accuracy and 0.411 Macro F1 across the 200-example golden set, with 102 errors (75 involving overprediction of `General / Feedback / Other`). Root-cause diagnostics on non-golden development data revealed three major architectural flaws:
+1. Matching the bare token `\bprime\b` falsely routed delivery complaints mentioning Prime orders into `Prime & Subscription Services`.
+2. Delivery problem vocabulary lacked common customer paraphrases (e.g. "package is missing", "marked delivered but nothing at door", "delivery attempted").
+3. Unweighted pattern matching fell back aggressively to `General / Feedback / Other` whenever multi-word phrasing deviated from rigid regex templates.
+
+**Trade-off:** Rather than introducing a heavy, non-deterministic deep learning framework (e.g., fine-tuned BERT or local transformers) that would introduce GPU dependencies and slow inference latency, I retained a deterministic, pattern-weighted feature scoring engine with normalized softmax probabilities and explicit boundary arbitration (Logistics > Tracking, Logistics > Prime, Seller Defect > Returns). This preserved ultra-low inference latency (p50: 24.46 ms) and 100% auditable routing logic.
+
+**Impact on Accuracy, Macro F1, and Safety:**
+- **Intent Accuracy:** Improved from **49.0% to 79.5%** (+30.5 percentage points absolute improvement).
+- **Macro Average F1:** Improved from **0.411 to 0.752** (+0.341 absolute improvement).
+- **Errors Resolved:** 61 out of 102 baseline errors eliminated (-59.8% error reduction).
+- **P0 Security Recall:** Maintained at **100.0%** (6/6 golden security alerts detected, 1.000 precision) with strict deterministic escalation.
+- **Financial Disputes:** Escalation triggers for duplicate billing, double charges, and unauthorized debits verified across multiple paraphrases without regression.
+- **Policy Compliance:** Maintained at **95.5%** with 100.0% No-Hallucination rate across all 200 benchmark responses.
+

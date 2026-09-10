@@ -185,15 +185,15 @@ The evaluation harness (`scripts/run_evaluation.py`) benchmarks the agent agains
 
 | Evaluation Dimension | Metric | Main Agent | Baseline 1 (Rules) | Baseline 2 (Nearest-Neighbor) |
 | :--- | :--- | :---: | :---: | :---: |
-| **Intent Classification** | Accuracy | **49.0%** | 45.0% | 39.0% |
-| | Macro F1 | **0.411** | 0.304 | 0.223 |
+| **Intent Classification** | Accuracy | **79.5%** | 45.0% | 39.0% |
+| | Macro F1 | **0.752** | 0.304 | 0.223 |
 | **Language & State** | Language Accuracy | **94.5%** | N/A | N/A |
 | | State Macro F1 | **0.338** | N/A | N/A |
-| **Escalation Decision** | Accuracy | **60.0%** | 60.5% | 60.5% |
-| | Precision | **0.478** | 0.000 | 0.000 |
-| | Recall | **0.139** | 0.000 | 0.000 |
-| | F1 Score | **0.216** | 0.000 | 0.000 |
-| **Security Risk (P0)** | Precision | **0.833** | 0.000 | 0.000 |
+| **Escalation Decision** | Accuracy | **62.0%** | 60.5% | 60.5% |
+| | Precision | **0.556** | 0.000 | 0.000 |
+| | Recall | **0.190** | 0.000 | 0.000 |
+| | F1 Score | **0.283** | 0.000 | 0.000 |
+| **Security Risk (P0)** | Precision | **1.000** | 0.000 | 0.000 |
 | | Recall | **100.0%** | 0.0% | 0.0% |
 | **Response Quality (Judge)**| Overall Score (1–5) | **3.42** | 3.10 | 2.65 |
 | | Correctness | **3.29** | 3.20 | 2.50 |
@@ -201,12 +201,13 @@ The evaluation harness (`scripts/run_evaluation.py`) benchmarks the agent agains
 | | Groundedness | **3.17** | 2.50 | 3.90 |
 | | Policy Compliance | **3.88** | 3.80 | 2.70 |
 | | Escalation Appropriateness | **3.98** | 2.80 | 2.10 |
-| **Deterministic Checks** | No Hallucination Rate | **100.0%** | 100.0% | 78.0% |
+| **Deterministic Checks** | Existence Rate | **100.0%** | 100.0% | 100.0% |
+| | No Hallucination Rate | **100.0%** | 100.0% | 78.0% |
 | | Policy Compliance Rate | **95.5%** | 62.0% | 45.0% |
 | **Retrieval** | Evidence Availability Rate| **95.0%** | N/A | 100.0% |
-| | Top-1 Hit Rate | **47.5%** | N/A | 34.0% |
-| **Latency** | Median (p50) | **20.16 ms** | 0.06 ms | 19.19 ms |
-| | 95th Percentile (p95) | **23.55 ms** | 0.14 ms | 22.10 ms |
+| | Top-1 Hit Rate | **41.5%** | N/A | 34.0% |
+| **Latency** | Median (p50) | **24.46 ms** | 0.08 ms | 22.41 ms |
+| | 95th Percentile (p95) | **31.76 ms** | 0.16 ms | 29.64 ms |
 
 ### LLM-as-a-Judge Rubric
 The LLM judge (`scripts/llm_judge.py`) evaluates response quality using Google Gemini (`gemini-3.5-flash-lite`) across 5 dimensions on a 1–5 scale:
@@ -270,7 +271,7 @@ python scripts/run_agent.py --text "Where is my package? The tracking hasn't upd
 # 7. Run consolidated manual smoke tests (26 cases across 18 categories)
 python scripts/run_manual_smoke_tests.py
 
-# 8. Run full automated test suite (50 unit tests)
+# 8. Run full automated test suite (60 unit tests)
 python -m unittest discover tests
 
 # 9. (Optional) Run 200-example evaluation harness with LLM judge
@@ -326,10 +327,11 @@ HIVER/
 │   ├── validate_judge_human_review.py  # Validate human audit workbook integrity
 │   └── verify_twcs.py                  # Raw TWCS dataset validator
 │
-├── tests/                              # Automated test suite (50 tests)
+├── tests/                              # Automated test suite (60 tests)
 │   ├── test_agent.py                   # Intent routing, safety, paraphrase regressions
 │   ├── test_api.py                     # FastAPI routes, schemas, and error states
 │   ├── test_evaluation.py              # Metrics, baselines, leakage exclusion, judge
+│   ├── test_generalization.py          # Multi-paraphrase generalization & safety tests
 │   ├── test_human_review_workflow.py   # Human review actions, validation, agreement
 │   └── test_pipeline.py                # Text normalization & thread reconstruction
 │
@@ -376,7 +378,7 @@ GEMINI_API_KEY=your_gemini_api_key_here
 
 ## 14. Testing
 
-### Run Full Test Suite (50 Unit Tests)
+### Run Full Test Suite (60 Unit Tests)
 ```bash
 python -m unittest discover tests
 ```

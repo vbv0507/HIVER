@@ -30,6 +30,7 @@ class AmazonHelpEscalationPolicy:
         self.high_risk_financial_pattern = re.compile(
             r"\b("
             r"(charg(ed?|ing)?|bill(ed?|ing)?|debit(ed)?|deduct(ed)?)\s+.*?\b(twice|double|again|two\s+times|multiple\s+times|repeatedly)\b|"
+            r"\b(double|twice|repeatedly)\s+(charg(ed?|ing)?|bill(ed?|ing)?|debit(ed)?|deduct(ed)?)\b|"
             r"\b(double|duplicate|repeat(ed)?|second|extra|two)\s+(charge[s]?|billing|debit[s]?|payment[s]?|fee[s]?|transactions?)\b|"
             r"\bseeing\s+(double|two|multiple)\s+charges\b|"
             r"\b(unauthorized|unrecognized|unknown|fraudulent|incorrect|disputed?|wrong|unexpected)\s+(charge[s]?|billing|debit[s]?|payment[s]?|fee[s]?|transactions?)\b|"
@@ -118,22 +119,20 @@ class AmazonHelpEscalationPolicy:
             )
 
         # 8. Intent-Specific Escalation Constraints:
-        # Delivery Problem & Logistics with damaged/missing claims often requires courier claim filing
+        # Delivery Problem & Logistics with physical theft or severe driver misconduct requires carrier investigation
         if intent == "Delivery Problem & Logistics":
-            if re.search(r"\b(stolen|lost|damaged|broken|courier stole|never showed up)\b", customer_text, re.IGNORECASE):
-                # If courier investigation is explicitly indicated
-                if re.search(r"\b(investigation|claim|report|police)\b", customer_text, re.IGNORECASE):
-                    return (
-                        False,
-                        "Delivery logistics issue requires filing a carrier claim or investigation.",
-                    )
-
-        # Seller & Product Quality with counterfeit or unresponsive seller
-        if intent == "Seller & Product Quality":
-            if re.search(r"\b(fake|counterfeit|scam|unresponsive seller|seller won't reply|won't refund)\b", customer_text, re.IGNORECASE):
+            if re.search(r"\b(stolen|courier stole|stole my|package (was )?stolen|stolen from (my )?(porch|door|mailbox)|driver (hit|abusive|threaten))\b", customer_text, re.IGNORECASE):
                 return (
                     False,
-                    "Third-party marketplace dispute or suspected counterfeit item requires A-to-z Guarantee claim review.",
+                    "Delivery logistics incident (stolen shipment or severe courier incident) requires carrier investigation and human intervention.",
+                )
+
+        # Seller & Product Quality with counterfeit, defective, or unresponsive seller
+        if intent == "Seller & Product Quality":
+            if re.search(r"\b(fake|counterfeit|scam|unresponsive|won't reply|wrong item|defective|broken)\b", customer_text, re.IGNORECASE):
+                return (
+                    False,
+                    "Third-party marketplace dispute, defective item, or suspected counterfeit item requires A-to-z Guarantee claim review.",
                 )
 
         # Routine Informational Queries Safe for Auto-Handling:

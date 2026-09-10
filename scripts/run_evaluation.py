@@ -422,36 +422,39 @@ def run_pipeline():
         "human_notes",
     ]
 
-    with open(HUMAN_AUDIT_CSV, "w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=audit_headers)
-        writer.writeheader()
-        for item in audit_sample:
-            ev_summary = " | ".join(
-                [f"[{ev['score']}] {ev['customer_message'][:50]} -> {ev['historical_response'][:50]}" for ev in item["retrieved_evidence"][:2]]
-            )
-            je = item.get("judge_evaluation", {})
-            je_scores = je.get("scores", je)
-            writer.writerow({
-                "message_id": item["message_id"],
-                "original_text": item["original_text"],
-                "agent_response": item["main_agent_output"]["draft_reply"],
-                "retrieved_evidence": ev_summary,
-                "llm_judge_correctness": je_scores.get("correctness", ""),
-                "llm_judge_helpfulness": je_scores.get("helpfulness", ""),
-                "llm_judge_groundedness": je_scores.get("groundedness", ""),
-                "llm_judge_policy": je_scores.get("policy", ""),
-                "llm_judge_escalation": je_scores.get("escalation", ""),
-                "human_correctness": "",
-                "human_helpfulness": "",
-                "human_groundedness": "",
-                "human_policy": "",
-                "human_escalation": "",
-                "human_notes": "",
-            })
-    print(f"✓ Saved 50-example audit sample to {HUMAN_AUDIT_CSV}")
+    if not HUMAN_AUDIT_CSV.exists():
+        with open(HUMAN_AUDIT_CSV, "w", encoding="utf-8", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=audit_headers)
+            writer.writeheader()
+            for item in audit_sample:
+                ev_summary = " | ".join(
+                    [f"[{ev['score']}] {ev['customer_message'][:50]} -> {ev['historical_response'][:50]}" for ev in item["retrieved_evidence"][:2]]
+                )
+                je = item.get("judge_evaluation", {})
+                je_scores = je.get("scores", je)
+                writer.writerow({
+                    "message_id": item["message_id"],
+                    "original_text": item["original_text"],
+                    "agent_response": item["main_agent_output"]["draft_reply"],
+                    "retrieved_evidence": ev_summary,
+                    "llm_judge_correctness": je_scores.get("correctness", ""),
+                    "llm_judge_helpfulness": je_scores.get("helpfulness", ""),
+                    "llm_judge_groundedness": je_scores.get("groundedness", ""),
+                    "llm_judge_policy": je_scores.get("policy", ""),
+                    "llm_judge_escalation": je_scores.get("escalation", ""),
+                    "human_correctness": "",
+                    "human_helpfulness": "",
+                    "human_groundedness": "",
+                    "human_policy": "",
+                    "human_escalation": "",
+                    "human_notes": "",
+                })
+        print(f"✓ Saved 50-example audit sample template to {HUMAN_AUDIT_CSV}")
+    else:
+        print(f"✓ Preserving existing verified human audit sample at {HUMAN_AUDIT_CSV}")
 
-    # Build Excel Review Interface for Audit Sample
-    wb = openpyxl.Workbook()
+    # Build Excel Review Interface for Audit Sample if not present
+    if not HUMAN_AUDIT_XLSX.exists():
     ws = wb.active
     ws.title = "Judge-Human Audit"
     ws.views.sheetView[0].showGridLines = True

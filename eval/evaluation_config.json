@@ -4,6 +4,9 @@
   "canonical_source": "C:\\Users\\vrai2\\OneDrive\\Desktop\\HIVER\\eval\\golden_eval_set_final.csv",
   "exclusions_file": "C:\\Users\\vrai2\\OneDrive\\Desktop\\HIVER\\eval\\golden_thread_exclusions.json",
   "retrieval_top_k": 3,
+  "judge_max_workers": 1,
+  "judge_delay_seconds": 1.5,
+  "judge_max_retries": 6,
   "models": {
     "main_agent": "AmazonHelpAgent (Hybrid Intent Classifier + TF-IDF Retrieval + Deterministic Policy + Grounded Generator)",
     "baseline_1": "RuleTemplateBaseline (Keyword/Regex + Static Canned Templates)",

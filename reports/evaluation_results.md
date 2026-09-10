@@ -14,15 +14,15 @@
 
 | Evaluation Dimension | Metric | Main AI Agent | Baseline 1 (Rules) | Baseline 2 (Nearest-Neighbor) |
 | :--- | :--- | :---: | :---: | :---: |
-| **Intent Classification** | Accuracy | **49.0%** | 45.0% | 39.0% |
-| | Macro F1 | **0.411** | 0.304 | 0.223 |
+| **Intent Classification** | Accuracy | **79.5%** | 45.0% | 39.0% |
+| | Macro F1 | **0.752** | 0.304 | 0.223 |
 | **Language & State** | Language Accuracy | **94.5%** | N/A | N/A |
 | | State Macro F1 | **0.338** | N/A | N/A |
-| **Escalation Decision** | Accuracy | **60.0%** | 60.5% | 60.5% |
-| | Precision | **0.478** | 0.000 | 0.000 |
-| | Recall | **0.139** | 0.000 | 0.000 |
-| | F1 Score | **0.216** | 0.000 | 0.000 |
-| **Security Risk (P0)** | Security Precision | **0.833** | 0.000 | 0.000 |
+| **Escalation Decision** | Accuracy | **62.0%** | 60.5% | 60.5% |
+| | Precision | **0.556** | 0.000 | 0.000 |
+| | Recall | **0.190** | 0.000 | 0.000 |
+| | F1 Score | **0.283** | 0.000 | 0.000 |
+| **Security Risk (P0)** | Security Precision | **1.000** | 0.000 | 0.000 |
 | | Security Recall | **100.0%** | 0.0% | 0.0% |
 | **Response Quality** | Overall Judge Score (1–5) | **3.42** | 3.10 | 2.65 |
 | | Correctness | **3.29** | 3.20 | 2.50 |
@@ -34,9 +34,9 @@
 | | No Hallucination Rate | **100.0%** | 100.0% | 78.0% |
 | | Policy Compliance Rate | **95.5%** | 62.0% | 45.0% |
 | **Retrieval Performance** | Evidence Availability Rate | **95.0%** | N/A | 100.0% |
-| | Top-1 Hit Rate | **47.5%** | N/A | 34.0% |
-| **Latency** | Median Latency (p50) | **20.16 ms** | 0.06 ms | 19.19 ms |
-| | 95th Percentile (p95) | **23.55 ms** | 0.14 ms | 22.1 ms |
+| | Top-1 Hit Rate | **41.5%** | N/A | 34.0% |
+| **Latency** | Median Latency (p50) | **24.46 ms** | 0.08 ms | 22.41 ms |
+| | 95th Percentile (p95) | **31.76 ms** | 0.16 ms | 29.64 ms |
 
 *(Note: Baselines 1 & 2 do not natively produce conversation state, language detection, or P0 security alert triage; metrics are marked N/A or baseline-derived).*
 
@@ -46,19 +46,19 @@
 
 | Intent Class | Support | Precision | Recall | F1 Score |
 | :--- | :---: | :---: | :---: | :---: |
-| **Delivery Tracking & Status** | 9 | 0.333 | 0.111 | 0.167 |
-| **Delivery Problem & Logistics** | 39 | 0.222 | 0.051 | 0.083 |
-| **Returns, Replacements & Refunds** | 10 | 0.750 | 0.600 | 0.667 |
-| **Payment, Billing & Gift Cards** | 4 | 0.667 | 0.500 | 0.571 |
-| **Prime & Subscription Services** | 4 | 0.000 | 0.000 | 0.000 |
-| **Order & Checkout** | 16 | 1.000 | 0.312 | 0.476 |
-| **Account Access & Security** | 6 | 0.714 | 0.833 | 0.769 |
-| **Digital Services & Devices** | 21 | 0.818 | 0.429 | 0.562 |
-| **Seller & Product Quality** | 18 | 1.000 | 0.111 | 0.200 |
-| **General / Feedback / Other** | 73 | 0.465 | 0.904 | 0.614 |
+| **Delivery Tracking & Status** | 9 | 1.000 | 0.444 | 0.615 |
+| **Delivery Problem & Logistics** | 39 | 0.788 | 0.667 | 0.722 |
+| **Returns, Replacements & Refunds** | 10 | 0.636 | 0.700 | 0.667 |
+| **Payment, Billing & Gift Cards** | 4 | 0.600 | 0.750 | 0.667 |
+| **Prime & Subscription Services** | 4 | 0.500 | 0.500 | 0.500 |
+| **Order & Checkout** | 16 | 1.000 | 0.812 | 0.897 |
+| **Account Access & Security** | 6 | 0.857 | 1.000 | 0.923 |
+| **Digital Services & Devices** | 21 | 0.895 | 0.809 | 0.850 |
+| **Seller & Product Quality** | 18 | 0.933 | 0.778 | 0.849 |
+| **General / Feedback / Other** | 73 | 0.753 | 0.918 | 0.827 |
 
-**Overall Intent Accuracy:** 49.0%  
-**Macro Average F1:** 0.411  
+**Overall Intent Accuracy:** 79.5%  
+**Macro Average F1:** 0.752  
 
 ---
 

@@ -69,7 +69,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS middleware for local React/Vite development
+# CORS middleware for API clients and web dashboards
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
