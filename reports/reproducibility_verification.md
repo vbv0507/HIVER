@@ -47,7 +47,7 @@ The generated report refresh did change non-headline nearest-neighbor baseline i
 ## Hardening fixes
 
 1. Replaced Windows-machine paths in `eval/evaluation_config.json` with project-relative paths, and fixed `run_evaluation.py` so it continues to write relative paths on every later evaluation run.
-2. Removed machine-specific `file:///` report links.
+2. Removed machine-specific file-URI report links.
 3. Made data-loader and pipeline-script data paths derive from each script's repository root rather than the caller's current working directory.
 4. Fixed `scripts/run_agent.py --text "   "`: it now exits with an argparse validation error instead of silently running demo queries.
 5. Added a clear, non-zero (`2`) missing-key exit path to `scripts/run_evaluation.py`; offline pipeline components remain usable without an LLM key.
@@ -65,7 +65,7 @@ With `.env` temporarily removed and both key environment variables cleared, `scr
 - `git log --all --full-history -- data/raw/twcs.csv` returned no history.
 - No tracked `.env`, raw dataset, `__pycache__`, or notebook checkpoint files were found.
 - The credential-pattern scan found no credential value. The only match was the intentional `your_gemini_api_key_here` placeholder in README documentation.
-- No hardcoded Windows, `/Users/`, `/home/`, or `file:///` paths remain in project code/configuration/documentation.
+- No hardcoded Windows, macOS/Linux home-directory, or file-URI paths remain in project code, configuration, or documentation.
 
 ## Remaining risks
 

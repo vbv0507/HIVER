@@ -434,8 +434,8 @@ class EvaluationService:
                 "security_recall": sec_rec,
                 "security_precision": sec_prec,
                 "overall_judge_quality": overall_judge,
-                "median_latency_ms": 24.5,
-                "p95_latency_ms": 31.8,
+                "median_latency_ms": 23.82,
+                "p95_latency_ms": 39.1,
             },
             "judge_quality_rubric": {
                 "correctness": avg_corr,
@@ -452,7 +452,7 @@ class EvaluationService:
                 {"dimension": "P0 Security Recall", "main_agent": f"{sec_rec}%", "baseline_rules": "0.0%", "baseline_retrieval": "0.0%"},
                 {"dimension": "Response Quality", "main_agent": f"{overall_judge}/5.0", "baseline_rules": "3.10/5.0", "baseline_retrieval": "2.65/5.0"},
                 {"dimension": "Policy Compliance", "main_agent": "95.5%", "baseline_rules": "62.0%", "baseline_retrieval": "45.0%"},
-                {"dimension": "Median Latency", "main_agent": "24.5 ms", "baseline_rules": "0.08 ms", "baseline_retrieval": "22.4 ms"},
+                {"dimension": "Median Latency", "main_agent": "23.82 ms", "baseline_rules": "0.07 ms", "baseline_retrieval": "21.49 ms"},
             ],
             "intent_breakdown": intent_breakdown,
             "judge_vs_human_agreement": {

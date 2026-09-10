@@ -16,13 +16,13 @@ The system is compared with two deliberately simpler baselines: a keyword/regex 
 
 | Metric | Main agent | Rule-template baseline | Nearest-neighbor baseline |
 | :--- | :---: | :---: | :---: |
-| Intent accuracy | 79.5% (159/200) | 45.0% | 39.0% |
-| Intent macro F1 | 0.752 | 0.304 | 0.223 |
+| Intent accuracy | 79.5% (159/200) | 45.0% | 41.5% |
+| Intent macro F1 | 0.752 | 0.304 | 0.221 |
 | Escalation accuracy | 62.0% (124/200) | 60.5% | 60.5% |
 | Escalation precision | 0.556 | 0.000 | 0.000 |
 | Escalation recall | 0.190 | 0.000 | 0.000 |
 | Escalation F1 | 0.283 | 0.000 | 0.000 |
-| P0 security recall | 100.0% (5/5) | 0.0% | 0.0% |
+| P0 security recall | 100.0% (6/6) | 0.0% | 0.0% |
 
 The full metrics, error examples, and generated artifacts are in `reports/evaluation_results.md`, `reports/evaluation_error_analysis.md`, and `reports/headline_metric_caveat.md`.
 
