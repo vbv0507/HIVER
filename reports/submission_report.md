@@ -22,7 +22,7 @@ The system is compared with two deliberately simpler baselines: a keyword/regex 
 | Escalation precision | 0.556 | 0.000 | 0.000 |
 | Escalation recall | 0.190 | 0.000 | 0.000 |
 | Escalation F1 | 0.283 | 0.000 | 0.000 |
-| P0 security recall | 100.0% (6/6) | 0.0% | 0.0% |
+| P0 security recall | 100.0% (5/5) | 0.0% | 0.0% |
 
 The full metrics, error examples, and generated artifacts are in `reports/evaluation_results.md`, `reports/evaluation_error_analysis.md`, and `reports/headline_metric_caveat.md`.
 

@@ -47,7 +47,7 @@ The golden evaluation benchmark contains exactly 200 high-fidelity, hand-audited
 
 ## 5. Escalation vs Auto-Handling Trade-Off
 
-The main agent achieved an **Escalation Accuracy of 62.0%** with **100.0% Security Recall**.
+The main agent achieved an **Escalation Accuracy of 62.0%** with **100.0% Security Recall (5/5 final human-reviewed alerts)**.
 
 - In automated customer support, an agent can achieve 100% security recall by simply escalating everything to humans. Doing so, however, destroys customer self-service ROI.
 - Conversely, maximizing auto-handling can lead to catastrophic brand and security breaches if account takeover reports are handled by a bot.

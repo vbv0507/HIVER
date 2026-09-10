@@ -169,7 +169,7 @@ This log records the main engineering decisions I made while building the Amazon
 - **Intent Accuracy:** Improved from **49.0% to 79.5%** (+30.5 percentage points absolute improvement).
 - **Macro Average F1:** Improved from **0.411 to 0.752** (+0.341 absolute improvement).
 - **Errors Resolved:** 61 out of 102 baseline errors eliminated (-59.8% error reduction).
-- **P0 Security Recall:** Maintained at **100.0%** (6/6 golden security alerts detected, 1.000 precision) with strict deterministic escalation.
+- **P0 Security Recall:** Maintained at **100.0%** (5/5 final human-reviewed security alerts detected, 1.000 precision) with strict deterministic escalation.
 - **Financial Disputes:** Escalation triggers for duplicate billing, double charges, and unauthorized debits verified across multiple paraphrases without regression.
 - **Policy Compliance:** Maintained at **95.5%** with 100.0% No-Hallucination rate across all 200 benchmark responses.
 

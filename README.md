@@ -193,8 +193,8 @@ The evaluation harness (`scripts/run_evaluation.py`) benchmarks the agent agains
 | | Precision | **0.556** | 0.000 | 0.000 |
 | | Recall | **0.190** | 0.000 | 0.000 |
 | | F1 Score | **0.283** | 0.000 | 0.000 |
-| **Security Risk (P0)** | Precision | **1.000** | 0.000 | 0.000 |
-| | Recall | **100.0%** | 0.0% | 0.0% |
+| **Security Risk (P0)** | Precision | **1.000 (5/5)** | 0.000 | 0.000 |
+| | Recall | **100.0% (5/5)** | 0.0% | 0.0% |
 | **Response Quality (Judge)**| Overall Score (1–5) | **3.42** | 3.10 | 2.65 |
 | | Correctness | **3.29** | 3.20 | 2.50 |
 | | Helpfulness | **2.78** | 3.40 | 2.80 |

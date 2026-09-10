@@ -39,7 +39,7 @@ The rebuilt `retrieval_index.joblib` contains exactly **20,000** records. Re-run
 | Intent accuracy | 79.5% | 79.5% |
 | Intent macro F1 | 0.752 | 0.752 |
 | Escalation accuracy / precision / recall / F1 | 62.0% / 0.556 / 0.190 / 0.283 | 62.0% / 0.556 / 0.190 / 0.283 |
-| P0 security precision / recall | 1.000 / 100.0% | 1.000 / 100.0% |
+| P0 security precision / recall | 1.000 (5/5) / 100.0% (5/5) | 1.000 (5/5) / 100.0% (5/5) |
 | Retrieval evidence availability / top-1 hit rate | 95.0% / 41.5% | 95.0% / 41.5% |
 
 The generated report refresh did change non-headline nearest-neighbor baseline intent accuracy from 39.0% to **41.5%**, its macro F1 from 0.223 to **0.221**, runtime latency observations, and two low-evidence score examples. `reports/evaluation_results.md` and `reports/evaluation_error_analysis.md` were regenerated; `reports/headline_metric_caveat.md` was regenerated but its numbers did not change.
